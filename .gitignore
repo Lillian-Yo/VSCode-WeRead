@@ -1,0 +1,40 @@
+# 依赖目录
+node_modules/
+.vscode-test/
+
+# 编译输出（TypeScript -> JavaScript）
+out/
+
+# Source Map 文件
+**/*.map
+
+# VSCode 扩展打包文件
+*.vsix
+
+# IDE / 编辑器配置
+.vscode/
+
+# Agent / IDE 沙箱配置
+.trae/
+
+# 日志文件
+*.log
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 测试相关缓存
+coverage/
+.nyc_output/
+
+# 本地环境配置
+.env
+.env.local
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+.vscode-test/
+.git/

@@ -1,0 +1,37 @@
+# 源代码
+src/**
+
+# 测试文件
+**/*.test.ts
+
+# 文档（仅保留 README）
+**/*.md
+!README.md
+
+# GitHub 配置
+.github/**
+
+# Agent / IDE / sandbox
+.trae/**
+.vscode-test/**
+*.vsix
+
+# VSCode 配置
+.vscode/**
+
+# 依赖（打包时会自动处理）
+node_modules/**
+
+# TypeScript 配置
+tsconfig.json
+
+# 图标源文件（保留 SVG 用于活动栏）
+# images/*.svg
+
+# 其他
+**/*.map
+.prettierrc
+.eslintrc.json
+.markdownlint.json
+scripts/**
+out/test/**

@@ -1,0 +1,592 @@
+{
+  "name": "weread-vscode",
+  "displayName": "VSCode-WeRead",
+  "description": "VSCode-WeRead：微信读书笔记同步、Markdown 导出、笔记搜索与阅读洞察扩展。",
+  "version": "0.1.1",
+  "publisher": "weread",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wangjianghu/VSCode-WeRead"
+  },
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other",
+    "Notebooks"
+  ],
+  "keywords": [
+    "vscode weread",
+    "微信读书",
+    "weread",
+    "weread notes",
+    "wechat read",
+    "wechat read notes",
+    "微信读书插件",
+    "微信读书笔记同步",
+    "微信读书笔记导出",
+    "微信读书 markdown",
+    "微信读书 markdown 导出",
+    "微信读书笔记搜索",
+    "vscode notes sync",
+    "vscode markdown export",
+    "markdown export",
+    "book notes",
+    "reading notes",
+    "notes sync",
+    "weread sync",
+    "weread markdown export",
+    "笔记同步",
+    "读书笔记",
+    "阅读笔记",
+    "markdown 导出"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:weread.bookshelf",
+    "onCommand:weread.login",
+    "onCommand:weread.logout",
+    "onCommand:weread.sync",
+    "onCommand:weread.openSettings",
+    "onCommand:weread.collapseAll",
+    "onCommand:weread.expandAll",
+    "onCommand:weread.toggleCollapseAll",
+    "onCommand:weread.showBookshelfToggleLogs",
+    "onCommand:weread.copyBookshelfToggleLogs",
+    "onCommand:weread.clearBookshelfToggleLogs",
+    "onCommand:weread.searchBookshelf",
+    "onCommand:weread.clearBookshelfFilter",
+    "onCommand:weread.login.cookie",
+    "onCommand:weread.login.protocol",
+    "onCommand:weread.openInsights",
+    "onCommand:weread.openNoteRoaming",
+    "onCommand:weread.showNoteRoamingLogs",
+    "onCommand:weread.copyNoteRoamingLogs",
+    "onCommand:weread.clearNoteRoamingLogs",
+    "onCommand:weread.cleanupDuplicateBookFiles",
+    "onCommand:weread.restoreDuplicateBookFiles",
+    "onCommand:weread.openBookFolder",
+    "onCommand:weread.deleteBookNote",
+    "onCommand:weread.deleteCategoryNotesBatch",
+    "onCommand:weread.accountMenu",
+    "onCommand:weread.account.switch",
+    "onCommand:weread.account.add",
+    "onCommand:weread.account.manage",
+    "onCommand:weread.account.remove",
+    "onCommand:weread.multiAccount.disable",
+    "onCommand:weread.multiAccount.enable",
+    "onCommand:weread.openOfficialSite",
+    "onCommand:weread.configureOutputPath",
+    "onCommand:weread.selectOutputPath",
+    "onCommand:weread.retryOutputPathValidation",
+    "onCommand:weread.openSystemPrivacySettings",
+    "onCommand:weread.migrateMementoToFiles",
+    "onCommand:weread.showIndexErrors"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "weread.login",
+        "title": "微信读书：登录微信读书",
+        "icon": "$(account)"
+      },
+      {
+        "command": "weread.login.protocol",
+        "title": "微信读书：网页登录协议扫码登录",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "weread.login.cookie",
+        "title": "微信读书：粘贴 Cookie 登录",
+        "icon": "$(key)"
+      },
+      {
+        "command": "weread.logout",
+        "title": "微信读书：登出",
+        "icon": "$(sign-out)"
+      },
+      {
+        "command": "weread.sync",
+        "title": "微信读书：同步笔记",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "weread.collapseAll",
+        "title": "微信读书：全部折叠",
+        "icon": "$(collapse-all)"
+      },
+      {
+        "command": "weread.expandAll",
+        "title": "微信读书：全部展开",
+        "icon": "$(expand-all)"
+      },
+      {
+        "command": "weread.toggleCollapseAll",
+        "title": "微信读书：折叠/展开",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "weread.showBookshelfToggleLogs",
+        "title": "微信读书：显示书架切换日志",
+        "icon": "$(output)"
+      },
+      {
+        "command": "weread.copyBookshelfToggleLogs",
+        "title": "微信读书：复制书架切换日志",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "weread.clearBookshelfToggleLogs",
+        "title": "微信读书：清空书架切换日志",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "weread.openBookshelf",
+        "title": "微信读书：打开书架",
+        "icon": "$(book)"
+      },
+      {
+        "command": "weread.searchNotes",
+        "title": "微信读书：搜索笔记",
+        "icon": "$(search)"
+      },
+      {
+        "command": "weread.searchBookshelf",
+        "title": "微信读书：搜索书架",
+        "icon": "$(search)"
+      },
+      {
+        "command": "weread.clearBookshelfFilter",
+        "title": "微信读书：点击清除筛选",
+        "icon": "$(close)"
+      },
+      {
+        "command": "weread.openSettings",
+        "title": "微信读书：打开设置",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "weread.openBookFolder",
+        "title": "微信读书：在文件夹中打开",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "weread.deleteBookNote",
+        "title": "微信读书：删除笔记文件",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "weread.deleteCategoryNotesBatch",
+        "title": "微信读书：删除分类目录（可选书籍）",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "weread.openInsights",
+        "title": "微信读书：打开阅读洞察",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "weread.openNoteRoaming",
+        "title": "微信读书：打开笔记漫游",
+        "icon": "$(history)"
+      },
+      {
+        "command": "weread.showNoteRoamingLogs",
+        "title": "微信读书：显示笔记漫游日志",
+        "icon": "$(output)"
+      },
+      {
+        "command": "weread.copyNoteRoamingLogs",
+        "title": "微信读书：复制笔记漫游日志",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "weread.clearNoteRoamingLogs",
+        "title": "微信读书：清空笔记漫游日志",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "weread.cleanupDuplicateBookFiles",
+        "title": "微信读书：清理重复笔记文件（按书籍ID）",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "weread.restoreDuplicateBookFiles",
+        "title": "微信读书：回滚重复笔记清理（最近一次）",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "weread.accountMenu",
+        "title": "微信读书：账户菜单",
+        "icon": "$(account)"
+      },
+      {
+        "command": "weread.account.switch",
+        "title": "微信读书：切换账号",
+        "icon": "$(account)"
+      },
+      {
+        "command": "weread.account.add",
+        "title": "微信读书：新增账号登录",
+        "icon": "$(add)"
+      },
+      {
+        "command": "weread.account.manage",
+        "title": "微信读书：管理账号",
+        "icon": "$(list-unordered)"
+      },
+      {
+        "command": "weread.account.remove",
+        "title": "微信读书：删除账号",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "weread.multiAccount.disable",
+        "title": "微信读书：关闭多账号模式并回滚",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "weread.multiAccount.enable",
+        "title": "微信读书：启用多账号模式",
+        "icon": "$(check)"
+      },
+      {
+        "command": "weread.openOfficialSite",
+        "title": "微信读书：打开微信读书官网",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "weread.configureOutputPath",
+        "title": "微信读书：配置笔记存储路径",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "weread.selectOutputPath",
+        "title": "微信读书：选择笔记存储目录",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "weread.retryOutputPathValidation",
+        "title": "微信读书：重试目录权限校验",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "weread.openSystemPrivacySettings",
+        "title": "微信读书：打开系统隐私与磁盘权限设置",
+        "icon": "$(lock)"
+      },
+      {
+        "command": "weread.migrateMementoToFiles",
+        "title": "微信读书：迁移历史数据到文件真源",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "weread.showIndexErrors",
+        "title": "微信读书：查看索引错误列表",
+        "icon": "$(warning)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "weread-explorer",
+          "title": "微信读书",
+          "icon": "images/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "weread-explorer": [
+        {
+          "id": "weread.bookshelf",
+          "name": "我的书架",
+          "icon": "images/icon.svg",
+          "canSelectMany": true
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "weread.collapseAll",
+          "when": "view == weread.bookshelf && !weread.bookshelfAllCollapsed",
+          "group": "navigation@0"
+        },
+        {
+          "command": "weread.expandAll",
+          "when": "view == weread.bookshelf && weread.bookshelfAllCollapsed",
+          "group": "navigation@0"
+        },
+        {
+          "command": "weread.sync",
+          "when": "view == weread.bookshelf",
+          "group": "navigation@1"
+        },
+        {
+          "command": "weread.searchBookshelf",
+          "when": "view == weread.bookshelf && !weread:bookshelfFilterActive",
+          "group": "navigation@2"
+        },
+        {
+          "command": "weread.clearBookshelfFilter",
+          "when": "view == weread.bookshelf && weread:bookshelfFilterActive",
+          "group": "navigation@3"
+        },
+        {
+          "command": "weread.openInsights",
+          "when": "view == weread.bookshelf",
+          "group": "navigation@4"
+        },
+        {
+          "command": "weread.openNoteRoaming",
+          "when": "view == weread.bookshelf",
+          "group": "navigation@4"
+        },
+        {
+          "command": "weread.accountMenu",
+          "when": "view == weread.bookshelf && weread:loggedIn",
+          "group": "navigation@5"
+        },
+        {
+          "command": "weread.accountMenu",
+          "when": "view == weread.bookshelf && !weread:loggedIn",
+          "group": "navigation@5"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "weread.openBookFolder",
+          "when": "view == weread.bookshelf && (viewItem == book || viewItem == category)",
+          "group": "inline@1"
+        },
+        {
+          "command": "weread.deleteBookNote",
+          "when": "view == weread.bookshelf && viewItem == book",
+          "group": "inline@2"
+        },
+        {
+          "command": "weread.deleteCategoryNotesBatch",
+          "when": "view == weread.bookshelf && viewItem == category",
+          "group": "inline@2"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "weread.searchNotes",
+        "key": "ctrl+shift+f",
+        "mac": "cmd+shift+f",
+        "when": "weread:loggedIn"
+      },
+      {
+        "command": "weread.openBookshelf",
+        "key": "ctrl+shift+b",
+        "mac": "cmd+shift+b",
+        "when": "weread:loggedIn"
+      },
+      {
+        "command": "weread.sync",
+        "key": "ctrl+shift+s",
+        "mac": "cmd+shift+s",
+        "when": "weread:loggedIn"
+      },
+      {
+        "command": "weread.accountMenu",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a",
+        "when": "view == weread.bookshelf"
+      },
+      {
+        "command": "weread.openNoteRoaming",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r",
+        "when": "weread:loggedIn"
+      }
+    ],
+    "configuration": {
+      "title": "微信读书",
+      "properties": {
+        "weread.outputPath": {
+          "type": "string",
+          "default": "",
+          "order": 20,
+          "description": "笔记保存根目录（统一路径配置节点）",
+          "markdownDescription": "请统一使用命令 [配置笔记存储路径](command:weread.configureOutputPath)\n\n该项用于显示与存储当前生效路径（系统维护字段，请勿手动修改。）"
+        },
+        "weread.outputPathInputMode": {
+          "type": "string",
+          "enum": ["picker", "manual"],
+          "default": "picker",
+          "order": 21,
+          "description": "笔记存储路径配置方式（系统维护字段）",
+          "markdownDescription": "系统维护字段：用于记录“配置笔记存储路径”的当前输入模式，请勿手动修改。"
+        },
+        "weread.manualOutputPathInput": {
+          "type": "boolean",
+          "default": false,
+          "order": 22,
+          "description": "笔记存储路径是否使用手动输入（系统维护字段）",
+          "markdownDescription": "系统维护字段：用于记录路径配置来源，请勿手动修改。"
+        },
+        "weread.lastValidationStatus": {
+          "type": "string",
+          "enum": ["passed", "failed"],
+          "default": "passed",
+          "order": 22.1,
+          "description": "最近一次目录校验状态（系统维护字段）",
+          "markdownDescription": "系统维护字段：记录最近一次目录校验是否成功，请勿手动修改。"
+        },
+        "weread.lastValidationFailReason": {
+          "type": "string",
+          "default": "",
+          "order": 22.2,
+          "description": "最近一次目录校验失败原因（系统维护字段）",
+          "markdownDescription": "系统维护字段：记录最近一次目录校验失败原因，请勿手动修改。"
+        },
+        "weread.lastValidationSummary": {
+          "type": "string",
+          "default": "passed",
+          "order": 23,
+          "description": "最近一次目录校验结果（只读）",
+          "markdownDescription": "系统维护字段：`passed` 或 `failed: <原因>`。请勿手动修改。"
+        },
+        "weread.fileNameTemplate": {
+          "type": "string",
+          "default": "{{title}}",
+          "description": "导出文件名模板"
+        },
+        "weread.exportThemes": {
+          "type": "array",
+          "description": "笔记漫游导出图片背景主题配置。支持自定义多种背景与匹配文本颜色。",
+          "default": [
+            { "id": "white", "name": "纯白", "bg": "#FFFFFF", "primary": "#312927", "weekday": "#5A514D", "divider": "#D5CEC4", "watermark": "#757575", "check": "#312927" },
+            { "id": "gray", "name": "浅灰", "bg": "#F5F5F5", "primary": "#312927", "weekday": "#5A514D", "divider": "#D5CEC4", "watermark": "#757575", "check": "#312927" },
+            { "id": "yellow", "name": "暖黄", "bg": "#FDF6E3", "primary": "#382C24", "weekday": "#5C4A3D", "divider": "#E6D3B8", "watermark": "#8C7765", "check": "#382C24" },
+            { "id": "green", "name": "浅绿", "bg": "#EAF4EC", "primary": "#1E3624", "weekday": "#3D5C45", "divider": "#C2DBC7", "watermark": "#6F8C76", "check": "#1E3624" },
+            { "id": "dark", "name": "暗夜黑", "bg": "#1E1E1E", "primary": "#E0E0E0", "weekday": "#B0B0B0", "divider": "#404040", "watermark": "#808080", "check": "#E0E0E0" },
+            { "id": "blue", "name": "深蓝", "bg": "#1A2332", "primary": "#DDE2ED", "weekday": "#A9B4C7", "divider": "#34415B", "watermark": "#7887A1", "check": "#DDE2ED" },
+            { "id": "pink", "name": "莫兰迪粉", "bg": "#F6EBEA", "primary": "#4A3130", "weekday": "#6B4A49", "divider": "#E0CACA", "watermark": "#9C7A79", "check": "#4A3130" },
+            { "id": "kraft", "name": "牛皮纸", "bg": "#E8DCC8", "primary": "#3B2F23", "weekday": "#594A3A", "divider": "#C9B8A1", "watermark": "#8A7B68", "check": "#3B2F23" }
+          ]
+        },
+        "weread.noteTemplate": {
+          "type": "string",
+          "default": "",
+          "description": "笔记内容模板（留空使用默认模板）"
+        },
+        "weread.autoSync": {
+          "type": "boolean",
+          "default": true,
+          "order": 40,
+          "description": "是否开启自动同步"
+        },
+        "weread.syncInterval": {
+          "type": "string",
+          "default": "24h",
+          "order": 41,
+          "when": "weread.autoSync == true",
+          "enum": [
+            "12h",
+            "24h",
+            "72h"
+          ],
+          "enumDescriptions": [
+            "每 12 小时自动同步一次",
+            "每自然天自动同步一次（默认）",
+            "每 72 小时自动同步一次"
+          ],
+          "description": "自动同步间隔"
+        },
+        "weread.categoryMode": {
+          "type": "string",
+          "default": "level1",
+          "enum": [
+            "level1",
+            "level2"
+          ],
+          "enumDescriptions": [
+            "按一级分类展示（默认）",
+            "按二级/完整分类展示"
+          ],
+          "description": "书架分类层级"
+        },
+        "weread.showCover": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否在书架中显示书籍封面"
+        },
+        "weread.language": {
+          "type": "string",
+          "default": "zh-CN",
+          "order": 10,
+          "enum": [
+            "zh-CN",
+            "zh-TW",
+            "en"
+          ],
+          "enumDescriptions": [
+            "简体中文",
+            "繁体中文",
+            "English"
+          ],
+          "description": "插件显示语言（简体中文 / 繁体中文 / English）"
+        },
+        "weread.dataSourceMode": {
+          "type": "string",
+          "default": "file_ssot",
+          "enum": [
+            "dual",
+            "file_ssot"
+          ],
+          "enumDescriptions": [
+            "双写兼容模式（迁移期）",
+            "文件真源模式（推荐）"
+          ],
+          "description": "数据源模式（迁移期保留）"
+        },
+        "weread.debugCanonicalIdLog": {
+          "type": "boolean",
+          "default": false,
+          "order": 90,
+          "description": "调试开关：打印 pcUrl canonical id 未解析日志（仅用于问题排查）"
+        },
+        "weread.multiAccountEnabled": {
+          "type": "boolean",
+          "default": true,
+          "order": 95,
+          "description": "是否启用多账号模式（紧急回滚可关闭）"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "benchmark:index-scan": "node ./scripts/benchmark/index-scan-baseline.js",
+    "benchmark:multi-account": "node ./scripts/benchmark/multi-account-baseline.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.70.0",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "@vscode/test-electron": "^2.1.5",
+    "@vscode/vsce": "^2.15.0",
+    "eslint": "^8.20.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "sharp": "^0.34.5",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {}
+}
