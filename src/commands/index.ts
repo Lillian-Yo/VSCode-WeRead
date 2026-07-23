@@ -684,6 +684,19 @@ export function registerCommands(context: vscode.ExtensionContext, options: Regi
       return { skipped: true, reason: 'no_active_account' };
     }
 
+    if (!getConfiguredOutputPath()) {
+      const choice = await vscode.window.showWarningMessage(
+        '同步需要先配置笔记存储路径，书架将从该目录读取数据。',
+        '立即配置'
+      );
+      if (choice === '立即配置') {
+        await vscode.commands.executeCommand('weread.configureOutputPath');
+      }
+      if (!getConfiguredOutputPath()) {
+        return { skipped: true, reason: 'no_output_path' };
+      }
+    }
+
     const syncService = getSyncService();
     if (syncService.isSyncingInProgress()) {
       return { skipped: true, reason: 'sync_in_progress' };
@@ -764,6 +777,19 @@ export function registerCommands(context: vscode.ExtensionContext, options: Regi
 
       if (!(await ensureActiveAccountOrHint('增量同步'))) {
         return;
+      }
+
+      if (!getConfiguredOutputPath()) {
+        const choice = await vscode.window.showWarningMessage(
+          '同步需要先配置笔记存储路径，书架将从该目录读取数据。',
+          '立即配置'
+        );
+        if (choice === '立即配置') {
+          await vscode.commands.executeCommand('weread.configureOutputPath');
+        }
+        if (!getConfiguredOutputPath()) {
+          return;
+        }
       }
 
       const syncService = getSyncService();

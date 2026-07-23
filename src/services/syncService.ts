@@ -23,6 +23,7 @@ import { getIndexService } from './indexService';
 import { AccountId } from '../types/account';
 import { getCookieManager } from '../auth';
 import { warnDeprecatedNoAccountParam } from '../utils/deprecation';
+import { getConfiguredOutputPath } from '../utils/outputPath';
 
 export class SyncService {
   private storageService: StorageService;
@@ -251,6 +252,7 @@ export class SyncService {
   ): Promise<Array<{ bookId: string; notesCount: number; updated: boolean }>> {
     let finished = 0;
     const results: Array<{ bookId: string; notesCount: number; updated: boolean }> = [];
+    const errors: string[] = [];
     const queue = [...books];
     const workers: Promise<void>[] = [];
     const exportService = getExportService();
@@ -282,9 +284,9 @@ export class SyncService {
             book.noteCount = notes.length;
             book.reviewCount = notes.filter((n) => n.type === 4 || n.thoughtText).length;
 
-            const exportResult = await exportService.exportBookForSyncWithNotes(book, notes);
+            const exportResult = await exportService.exportBookForSyncWithNotes(book, notes, accountId);
             if (!exportResult.success) {
-              console.warn(`[Sync][account:${accountId}] Failed to write notes file for ${book.title}: ${exportResult.error}`);
+              throw new Error(exportResult.error || `写入《${book.title}》的笔记文件失败`);
             }
 
             results.push({
@@ -300,6 +302,9 @@ export class SyncService {
           }
         } catch (error) {
           console.error(`[Sync][account:${accountId}] Failed to sync book ${book.title}:`, error);
+          errors.push(
+            `《${book.title}》：${error instanceof Error ? error.message : String(error)}`
+          );
         } finally {
           finished += 1;
           this.syncedBookCount.set(accountId, finished);
@@ -313,6 +318,12 @@ export class SyncService {
       workers.push(worker());
     }
     await Promise.all(workers);
+
+    if (errors.length > 0) {
+      const detail = errors.slice(0, 3).join('；');
+      const remaining = errors.length > 3 ? `；另有 ${errors.length - 3} 本失败` : '';
+      throw new Error(`有 ${errors.length} 本书同步失败：${detail}${remaining}`);
+    }
 
     return results;
   }
@@ -353,6 +364,9 @@ export class SyncService {
   }
 
   private async syncChangedBooks(remoteBooks: Book[], localBooks: Book[], accountId: AccountId): Promise<SyncResult> {
+    if (!getConfiguredOutputPath()) {
+      throw new Error('未设置笔记保存路径，请先运行“微信读书：配置笔记存储路径”');
+    }
     const diffService = getDiffService();
     const diffs = diffService.detectBookChanges(localBooks, remoteBooks);
     const syncPlan = diffService.generateSyncPlan(diffs, remoteBooks);
@@ -383,7 +397,10 @@ export class SyncService {
     }
 
     this.updateProgress(SyncStep.SavingData, remoteBooks.length, remoteBooks.length, '保存数据', accountId);
-    await getLocalDataService().reloadFromConfiguredPath(accountId).catch(() => undefined);
+    const reloadResult = await getLocalDataService().reloadFromConfiguredPath(accountId);
+    if (remoteBooks.length > 0 && reloadResult.booksCount === 0) {
+      throw new Error('同步文件已处理，但本地书架索引为空，请检查笔记保存路径和目录权限');
+    }
     await this.rebuildDailyAggFromIndex(accountId).catch(() => undefined);
     try {
       const cleanupResult = await getBookFileCleanupService().cleanupDuplicateBookFilesForAccount(accountId);
